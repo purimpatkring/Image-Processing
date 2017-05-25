@@ -73,7 +73,7 @@ def merge_image(image_1_keypoint,image_2_keypoint,image_1,image_2):
 
 
 #===============================================
-# 				MAIN FUNCTION
+# 	MAIN FUNCTION
 #=============================================== 
 
 # Read images from folder
@@ -125,30 +125,4 @@ for num_img in range(len(images)-1):
 
 	# Set result image to imageA for combine with next image
 	image_1_color = result_new
-
-
-	
-
-
-# cv2.imshow("Image A", imageA)
-# cv2.imshow("Image B", imageB)
-# cv2.imshow("Keypoint Matches", vis)
-# cv2.imshow("Result", result_new)
-# cv2.waitKey(0)
-# imageA = cv2.imread(args["first"])
-# imageB = cv2.imread(args["second"])
-
-# imageA = imutils.resize(imageA, width=400)
-# imageB = imutils.resize(imageB, width=400)
-
-# stitch the images together to create a panorama
-# stitcher = Stitcher()
-# (result, vis) = stitcher.stitch([imageA, imageB], showMatches=True)
-
-# show the images
-# cv2.imshow("Image A", imageA)
-# cv2.imshow("Image B", imageB)
-# cv2.imshow("Keypoint Matches", vis)
-# cv2.imshow("Result", result)
-# cv2.waitKey(0)
 
