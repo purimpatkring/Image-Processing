@@ -38,7 +38,7 @@ def detect_and_match_keypoint(image_1,image_2):
     image_1_keypoint = []
     image_2_keypoint = []
     for m,n in matches:
-        if m.distance < 0.2*n.distance:
+        if m.distance < 0.70*n.distance:
             match_details.append([m])
             image_1_keypoint.append(kp1[m.queryIdx])
             image_2_keypoint.append(kp2[m.trainIdx])
@@ -67,7 +67,10 @@ def merge_image(image_1_keypoint,image_2_keypoint,image_1,image_2):
     print "H is a transform matrix"
     print h
     #transform coordinate image
-    panorama_image = cv2.warpPerspective(image_2, h,(image_2.shape[1] + image_1.shape[1], image_2.shape[0]))
+    if image_2.shape[0] != image_1.shape[0]:
+    	panorama_image = cv2.warpPerspective(image_2, h,(image_2.shape[1] + image_1.shape[1], image_1.shape[0]))
+    else:
+		panorama_image = cv2.warpPerspective(image_2, h,(image_2.shape[1] + image_1.shape[1], image_2.shape[0]))
     panorama_image[0:image_1.shape[0], 0:image_1.shape[1]] = image_1
     return h,panorama_image
 
@@ -100,14 +103,25 @@ for num_img in range(len(images)-1):
 	# Get row and column of result image 
 	(row,col,channel) = panorama_image.shape
 
+	count_black = 0
+	blackC = 0
 	# Loop to find black area
 	for cols in range(col):
-		if np.any(panorama_image[0,cols] == 0):
-			blackC = cols
+		count_black = 0
+		for rows in range(row):
+			if np.any(panorama_image[rows,cols] == 0):
+				count_black = count_black+1
+				# print "row = "+str(rows)+" : " + str(panorama_image[rows,cols])
+		if count_black == row:
+			blackC = cols 
+			# print "col = "+str(cols)+"count_black = "+str(count_black)
+			# print "blackC = "+str(blackC)
 			break
+
 
 	# Init new image
 	result_new = np.zeros((row,blackC-1,3), np.uint8)
+
 	# Copy result image to new image except black area
 	for rows in range(row):
 		for cols in range(blackC-1):
